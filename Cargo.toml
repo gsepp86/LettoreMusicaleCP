@@ -1,0 +1,19 @@
+[package]
+name = "lettore-musicale"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+eframe = "0.29"
+egui = "0.29"
+rodio = { version = "0.19", features = ["symphonia-all"] }
+rfd = "0.15"
+lofty = "0.22"
+image = { version = "0.25", default-features = false, features = ["jpeg", "png"] }
+
+[build-dependencies]
+winres = "0.1"
+
+[profile.release]
+opt-level = 3
+strip = true
