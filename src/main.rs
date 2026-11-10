@@ -773,7 +773,9 @@ impl eframe::App for App {
             ui.vertical_centered(|ui| {
                 ui.add_space(8.0);
                 let avail = ui.available_height();
-                let size = (avail - 130.0).clamp(120.0, 360.0);
+                let size = (avail - 130.0)
+                    .min(ui.available_width() - 16.0)
+                    .clamp(120.0, 360.0);
                 draw_vinyl(ui, self.angle, size, self.dark, self.cover_tex.as_ref());
 
                 ui.add_space(10.0);
@@ -846,10 +848,49 @@ impl eframe::App for App {
     }
 }
 
+/// Icona della finestra: un disco in vinile disegnato a codice (nessun file esterno).
+fn disc_icon(size: u32) -> egui::IconData {
+    let s = size as f32;
+    let c = s / 2.0;
+    let r = s / 2.0 - 1.0;
+    let label = r * 0.38;
+    let hole = r * 0.07;
+    let mut rgba = Vec::with_capacity((size * size * 4) as usize);
+
+    for y in 0..size {
+        for x in 0..size {
+            let dx = x as f32 + 0.5 - c;
+            let dy = y as f32 + 0.5 - c;
+            let d = (dx * dx + dy * dy).sqrt();
+            // bordo esterno con antialiasing
+            let alpha = ((r + 0.5 - d).clamp(0.0, 1.0) * 255.0) as u8;
+
+            let (cr, cg, cb) = if d <= hole {
+                (14, 14, 16)
+            } else if d <= label {
+                (55, 138, 221)
+            } else {
+                // solchi: variazione sottile del nero
+                let g = (d * 1.6).sin() * 0.5 + 0.5;
+                let v = 20 + (g * 18.0) as u8;
+                (v, v, v + 4)
+            };
+            rgba.extend_from_slice(&[cr, cg, cb, alpha]);
+        }
+    }
+
+    egui::IconData {
+        rgba,
+        width: size,
+        height: size,
+    }
+}
+
 fn main() -> eframe::Result<()> {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_title("Lettore musicale")
+            .with_icon(disc_icon(256))
             .with_inner_size([540.0, 480.0])
             .with_min_inner_size([360.0, 400.0]),
         ..Default::default()
