@@ -317,7 +317,7 @@ fn icon_button(ui: &mut egui::Ui, icon: Icon, tooltip: &str, active: bool) -> bo
     p.rect_filled(rect, 6.0, bg);
     let c = rect.center();
     let v = |x: f32, y: f32| c + Vec2::new(x, y);
-    let stroke = Stroke::new(1.6, fg);
+    let stroke = Stroke::new(1.6_f32, fg);
 
     match icon {
         Icon::Play => {
@@ -593,7 +593,7 @@ fn draw_vinyl(
     // Solchi fissi
     for k in 1..=7 {
         let rr = r * (0.42 + 0.075 * k as f32);
-        p.circle_stroke(c, rr, Stroke::new(1.0, Color32::from_white_alpha(16)));
+        p.circle_stroke(c, rr, Stroke::new(1.0_f32, Color32::from_white_alpha(16)));
     }
 
     // Riflessi che ruotano: sono ciò che rende visibile la rotazione
@@ -609,7 +609,9 @@ fn draw_vinyl(
     // Etichetta: copertina se presente, altrimenti colore di accento
     match cover {
         Some(tex) => draw_cover_disc(p, tex.id(), c, r * 0.32, angle),
-        None => p.circle_filled(c, r * 0.30, ACCENT),
+        None => {
+            p.circle_filled(c, r * 0.30, ACCENT);
+        }
     }
 
     // Puntino che gira sull'etichetta
