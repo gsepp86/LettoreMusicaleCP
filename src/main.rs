@@ -430,7 +430,7 @@ impl App {
             Ok(p) => (Some(p), None),
             Err(e) => (None, Some(e)),
         };
-        Self {
+        let mut app = Self {
             player,
             init_error,
             tracks: Vec::new(),
@@ -444,7 +444,25 @@ impl App {
             cover_for: None,
             seek_drag: None,
             show_info: false,
+        };
+        app.open_from_args();
+        app
+    }
+
+    /// Apre i file passati da Windows (doppio clic su un file audio associato).
+    fn open_from_args(&mut self) {
+        let paths: Vec<PathBuf> = std::env::args_os()
+            .skip(1)
+            .map(PathBuf::from)
+            .filter(|p| p.is_file())
+            .collect();
+        if paths.is_empty() {
+            return;
         }
+        for p in paths {
+            self.tracks.push(read_track(p));
+        }
+        self.play_index(0);
     }
 
     fn add_files(&mut self) {
