@@ -646,7 +646,7 @@ fn info_window(ctx: &egui::Context, open: &mut bool) {
         .resizable(false)
         .anchor(Align2::CENTER_CENTER, [0.0, 0.0])
         .show(ctx, |ui| {
-            ui.heading("Lettore musicale");
+            ui.heading("Lettore Musicale CP");
             ui.label(format!("Versione {VERSION}"));
             ui.add_space(6.0);
             ui.label(
@@ -654,7 +654,7 @@ fn info_window(ctx: &egui::Context, open: &mut bool) {
                  tag e copertine, formati audio ampi, tema chiaro e scuro.",
             );
             ui.add_space(6.0);
-            ui.label("Lettore musicale opensource creato da Peppe CP in collaborazione con IA.");
+            ui.label("Lettore Musicale CP, opensource, creato da Peppe CP in collaborazione con IA.");
             ui.add_space(6.0);
             ui.label("Vuoi contribuire al progetto con una donazione?");
             ui.hyperlink_to("paypal.me/PeppeCP", "https://paypal.me/PeppeCP");
@@ -891,8 +891,8 @@ fn main() -> eframe::Result<()> {
         viewport: egui::ViewportBuilder::default()
             .with_title("Lettore musicale")
             .with_icon(disc_icon(256))
-            .with_inner_size([540.0, 480.0])
-            .with_min_inner_size([360.0, 400.0]),
+            .with_inner_size([520.0, 400.0])
+            .with_min_inner_size([400.0, 340.0]),
         ..Default::default()
     };
     eframe::run_native(
