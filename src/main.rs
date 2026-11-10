@@ -755,7 +755,7 @@ impl eframe::App for App {
             ui.vertical_centered(|ui| {
                 ui.add_space(8.0);
                 let avail = ui.available_height();
-                let size = (avail - 230.0).clamp(120.0, 320.0);
+                let size = (avail - 130.0).clamp(120.0, 360.0);
                 draw_vinyl(ui, self.angle, size, self.dark, self.cover_tex.as_ref());
 
                 ui.add_space(10.0);
@@ -777,7 +777,8 @@ impl eframe::App for App {
                     _ => 0.0,
                 };
                 let shown = self.seek_drag.unwrap_or(frac_now);
-                let (dragging, commit) = seek_bar(ui, shown, self.seek_drag, 280.0);
+                let bar_w = (ui.available_width() - 16.0).min(280.0);
+                let (dragging, commit) = seek_bar(ui, shown, self.seek_drag, bar_w);
                 self.seek_drag = dragging;
                 if let (Some(f), Some(t)) = (commit, total) {
                     self.seek(Duration::from_secs_f32(t.as_secs_f32() * f));
