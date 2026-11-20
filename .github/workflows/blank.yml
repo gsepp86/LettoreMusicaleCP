@@ -2,8 +2,12 @@ name: Build Windows
 
 on:
   push:
+    branches: [main]
+    tags: ["v*"]
   pull_request:
   workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -27,3 +31,15 @@ jobs:
         with:
           name: lettore-musicale-windows
           path: target/release/lettore-musicale.exe
+
+      # Su tag v* o quando una release viene pubblicata, allega l'eseguibile
+      # alla release (la crea se non esiste ancora).
+      - name: Attach exe to release
+        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/release/lettore-musicale.exe
+          tag_name: ${{ github.event.release.tag_name || github.ref_name }}
+          generate_release_notes: ${{ github.event_name != 'release' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

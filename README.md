@@ -1,4 +1,4 @@
-# Lettore musicale CP 1.0
+# Lettore musicale CP 2.0
 
 Lettore musicale moderno e senza fronzoli per Windows. Un disco in vinile gira mentre la musica suona, la copertina dell'album diventa l'etichetta del disco, e la playlist resta a portata di mano sulla destra.
 
@@ -6,6 +6,15 @@ Lettore musicale moderno e senza fronzoli per Windows. Un disco in vinile gira m
 
 [![Donate via PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://paypal.me/PeppeCP)
 
+Repository: https://github.com/gsepp86/VISUAL-IMMAGINI-CP
+
+## Novità della versione 2.0
+
+- **Lingua italiana e inglese**, scelta dalla nuova finestra **Impostazioni** e applicata subito a tutta l'interfaccia
+- **Nuova sezione Impostazioni** con controlli segmentati per tema e lingua
+- **Interfaccia più moderna**: angoli arrotondati, tipografia più ariosa, colori di accento, ombre e pulsante di riproduzione principale evidenziato
+- **Finestra Informazioni rinnovata**, con il testo per sostenere il progetto e il pulsante per la donazione PayPal
+- Messaggi di errore tradotti nella lingua scelta
 
 ## Caratteristiche
 
@@ -16,7 +25,8 @@ Lettore musicale moderno e senza fronzoli per Windows. Un disco in vinile gira m
 - Pulsante per nascondere la playlist e lasciare solo il disco
 - Barra di avanzamento cliccabile e trascinabile per saltare in un punto del brano
 - Brano successivo e precedente, con avanzamento automatico alla fine di ogni brano
-- Tema scuro e tema chiaro, dal menu Visualizza
+- Tema scuro e tema chiaro
+- Lingua italiana o inglese
 - Apertura dei file con doppio clic, se il lettore è associato ai file audio
 
 ## Formati audio
@@ -34,12 +44,13 @@ Per Opus e WMA serve `ffmpeg.exe`. Se usi l'installer, metti `ffmpeg.exe` nella 
 - **Barra spaziatrice** per riproduzione e pausa
 - Clic su un brano nella playlist per riprodurlo
 - Clic sulla barra di avanzamento per saltare in un punto del brano
+- **Impostazioni** dal menu in alto per cambiare tema e lingua
 - Icona del disco in alto a destra per nascondere o mostrare la playlist
 - Icona **i** in alto a destra per le informazioni sul programma
 
 ## Installazione
 
-Scarica `LettoreMusicaleCP-Setup-1.0.0.exe` dalla sezione Actions del repository, oppure dalla pagina delle release, ed eseguilo. L'installer crea i collegamenti e può associare i file audio al lettore.
+Scarica `lettore-musicale.exe` dalla pagina delle release (versione 2.0) o dalla sezione Actions del repository, ed eseguilo.
 
 ## Compilazione dal sorgente
 
@@ -50,8 +61,6 @@ cargo build --release
 ```
 
 L'eseguibile si trova in `target\release\lettore-musicale.exe`.
-
-Per creare anche l'installer, installa [Inno Setup 6](https://jrsoftware.org/isinfo.php) e compila lo script `installer\LettoreMusicaleCP.iss`.
 
 ## Tecnologia
 
