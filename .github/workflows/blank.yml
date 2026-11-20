@@ -9,6 +9,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
@@ -32,14 +35,23 @@ jobs:
           name: lettore-musicale-windows
           path: target/release/lettore-musicale.exe
 
-      # Su tag v* o quando una release viene pubblicata, allega l'eseguibile
-      # alla release (la crea se non esiste ancora).
+      # Se esiste una release per la versione in Cargo.toml, allega
+      # l'eseguibile (installabile) al suo interno.
       - name: Attach exe to release
-        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'release'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: target/release/lettore-musicale.exe
-          tag_name: ${{ github.event.release.tag_name || github.ref_name }}
-          generate_release_notes: ${{ github.event_name != 'release' }}
+        shell: bash
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          VERSION=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)
+          ASSET="LettoreMusicaleCP-${VERSION}.exe"
+          mkdir -p dist
+          cp target/release/lettore-musicale.exe "dist/${ASSET}"
+          for TAG in "v${VERSION}" "v${VERSION%.0}"; do
+            if gh release view "$TAG" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+              gh release upload "$TAG" "dist/${ASSET}" --repo "${GITHUB_REPOSITORY}" --clobber
+              echo "Allegato ${ASSET} alla release ${TAG}"
+              exit 0
+            fi
+          done
+          echo "Nessuna release trovata per la versione ${VERSION}: eseguibile caricato solo come artifact."

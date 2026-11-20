@@ -50,7 +50,7 @@ Per Opus e WMA serve `ffmpeg.exe`. Se usi l'installer, metti `ffmpeg.exe` nella 
 
 ## Installazione
 
-Scarica `lettore-musicale.exe` dalla pagina delle release (versione 2.0) o dalla sezione Actions del repository, ed eseguilo.
+Scarica `LettoreMusicaleCP-2.0.0.exe` dalla pagina delle release (versione 2.0.0) o dalla sezione Actions del repository, ed eseguilo: è un singolo file eseguibile, non serve installare altro.
 
 ## Compilazione dal sorgente
 

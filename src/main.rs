@@ -501,16 +501,16 @@ fn apply_style(ctx: &egui::Context, dark: bool) {
     };
 
     style.visuals = v;
-    style.spacing.item_spacing = Vec2::new(10.0, 8.0);
-    style.spacing.button_padding = Vec2::new(12.0, 6.0);
+    style.spacing.item_spacing = Vec2::new(8.0, 6.0);
+    style.spacing.button_padding = Vec2::new(10.0, 4.0);
     style.spacing.slider_width = 180.0;
     style.spacing.scroll.bar_width = 8.0;
 
     style.text_styles = [
-        (egui::TextStyle::Small, FontId::proportional(12.0)),
-        (egui::TextStyle::Body, FontId::proportional(15.0)),
-        (egui::TextStyle::Button, FontId::proportional(15.0)),
-        (egui::TextStyle::Heading, FontId::proportional(22.0)),
+        (egui::TextStyle::Small, FontId::proportional(11.0)),
+        (egui::TextStyle::Body, FontId::proportional(14.0)),
+        (egui::TextStyle::Button, FontId::proportional(14.0)),
+        (egui::TextStyle::Heading, FontId::proportional(20.0)),
         (egui::TextStyle::Monospace, FontId::monospace(13.0)),
     ]
     .into();
@@ -593,7 +593,7 @@ fn icon_button(ui: &mut egui::Ui, icon: Icon, tooltip: &str, active: bool, size:
 
 /// Pulsante principale di riproduzione: cerchio pieno con accento.
 fn play_button(ui: &mut egui::Ui, playing: bool, tooltip: &str) -> bool {
-    let size = 56.0;
+    let size = 46.0;
     let (rect, resp) = ui.allocate_exact_size(Vec2::splat(size), Sense::click());
     let fill = if resp.hovered() {
         ACCENT_DEEP.linear_multiply(1.0)
@@ -993,7 +993,7 @@ fn segmented<T: PartialEq + Copy>(ui: &mut egui::Ui, current: &mut T, options: &
                     ui.visuals().widgets.inactive.weak_bg_fill
                 })
                 .rounding(Rounding::same(9.0))
-                .min_size(Vec2::new(120.0, 30.0));
+                .min_size(Vec2::new(108.0, 28.0));
             if ui.add(button).clicked() {
                 *current = *value;
             }
@@ -1008,11 +1008,11 @@ fn settings_window(ctx: &egui::Context, open: &mut bool, dark: &mut bool, lang: 
         .open(open)
         .collapsible(false)
         .resizable(false)
-        .default_width(340.0)
+        .default_width(310.0)
         .anchor(Align2::CENTER_CENTER, [0.0, 0.0])
         .show(ctx, |ui| {
             ui.add_space(2.0);
-            ui.label(RichText::new(t.appearance).size(16.0).strong());
+            ui.label(RichText::new(t.appearance).size(15.0).strong());
             ui.add_space(4.0);
             segmented(
                 ui,
@@ -1022,7 +1022,7 @@ fn settings_window(ctx: &egui::Context, open: &mut bool, dark: &mut bool, lang: 
             ui.add_space(12.0);
             ui.separator();
             ui.add_space(10.0);
-            ui.label(RichText::new(t.language).size(16.0).strong());
+            ui.label(RichText::new(t.language).size(15.0).strong());
             ui.add_space(4.0);
             segmented(ui, lang, &[(Lang::It, "Italiano"), (Lang::En, "English")]);
             ui.add_space(6.0);
@@ -1038,12 +1038,12 @@ fn info_window(ctx: &egui::Context, open: &mut bool, lang: Lang) {
         .open(open)
         .collapsible(false)
         .resizable(false)
-        .default_width(430.0)
+        .default_width(400.0)
         .anchor(Align2::CENTER_CENTER, [0.0, 0.0])
         .show(ctx, |ui| {
             ui.add_space(2.0);
             ui.horizontal(|ui| {
-                ui.label(RichText::new(t.app_name).size(22.0).strong());
+                ui.label(RichText::new(t.app_name).size(19.0).strong());
                 ui.label(RichText::new(format!("v{VERSION}")).color(ACCENT).strong().size(15.0));
             });
             ui.add_space(8.0);
@@ -1119,7 +1119,7 @@ impl eframe::App for App {
         }
 
         egui::TopBottomPanel::top("top")
-            .frame(egui::Frame::none().inner_margin(egui::Margin::symmetric(12.0, 6.0)))
+            .frame(egui::Frame::none().inner_margin(egui::Margin::symmetric(10.0, 4.0)))
             .show(ctx, |ui| {
                 egui::menu::bar(ui, |ui| {
                     ui.label(
@@ -1144,10 +1144,10 @@ impl eframe::App for App {
                         } else {
                             (Icon::Playlist, self.tr().show_playlist)
                         };
-                        if icon_button(ui, icon, tip, !self.show_list, 32.0) {
+                        if icon_button(ui, icon, tip, !self.show_list, 28.0) {
                             self.show_list = !self.show_list;
                         }
-                        if icon_button(ui, Icon::Info, self.tr().about, self.show_info, 32.0) {
+                        if icon_button(ui, Icon::Info, self.tr().about, self.show_info, 28.0) {
                             self.show_info = !self.show_info;
                         }
                     });
@@ -1161,7 +1161,7 @@ impl eframe::App for App {
         if self.show_list {
             egui::SidePanel::right("playlist")
                 .resizable(true)
-                .default_width(280.0)
+                .default_width(250.0)
                 .frame(
                     egui::Frame::none()
                         .fill(if self.dark {
@@ -1169,10 +1169,10 @@ impl eframe::App for App {
                         } else {
                             Color32::from_rgb(250, 251, 253)
                         })
-                        .inner_margin(egui::Margin::symmetric(12.0, 10.0)),
+                        .inner_margin(egui::Margin::symmetric(10.0, 8.0)),
                 )
                 .show(ctx, |ui| {
-                    ui.label(RichText::new(self.tr().playlist).size(18.0).strong());
+                    ui.label(RichText::new(self.tr().playlist).size(16.0).strong());
                     ui.add_space(6.0);
                     if self.tracks.is_empty() {
                         ui.label(RichText::new(self.tr().playlist_empty).weak());
@@ -1188,7 +1188,7 @@ impl eframe::App for App {
                                     None => self.track_title(i),
                                 };
                                 if ui
-                                    .selectable_label(selected, RichText::new(text).size(14.0))
+                                    .selectable_label(selected, RichText::new(text).size(13.0))
                                     .clicked()
                                 {
                                     clicked = Some(i);
@@ -1203,23 +1203,19 @@ impl eframe::App for App {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.vertical_centered(|ui| {
-                ui.add_space(10.0);
+                ui.add_space(6.0);
                 let avail = ui.available_height();
-                let size = (avail - 170.0)
+                let size = (avail - 150.0)
                     .min(ui.available_width() - 24.0)
-                    .clamp(140.0, 380.0);
+                    .clamp(120.0, 300.0);
                 draw_vinyl(ui, self.angle, size, self.dark, self.cover_tex.as_ref());
 
-                ui.add_space(14.0);
-                ui.label(
-                    RichText::new(self.title())
-                        .size(22.0)
-                        .strong(),
-                );
-                if let Some(a) = self.artist() {
-                    ui.label(RichText::new(a).size(15.0).color(muted(self.dark)));
-                }
                 ui.add_space(10.0);
+                ui.label(RichText::new(self.title()).size(19.0).strong());
+                if let Some(a) = self.artist() {
+                    ui.label(RichText::new(a).size(14.0).color(muted(self.dark)));
+                }
+                ui.add_space(8.0);
 
                 // Avanzamento: cliccabile e trascinabile
                 let (played, total) = self
@@ -1234,7 +1230,7 @@ impl eframe::App for App {
                     _ => 0.0,
                 };
                 let shown = self.seek_drag.unwrap_or(frac_now);
-                let bar_w = (ui.available_width() - 40.0).clamp(180.0, 320.0);
+                let bar_w = (ui.available_width() - 40.0).clamp(160.0, 280.0);
                 let (dragging, commit) = seek_bar(ui, shown, self.seek_drag, bar_w, self.dark);
                 self.seek_drag = dragging;
                 if let (Some(f), Some(t)) = (commit, total) {
@@ -1252,8 +1248,8 @@ impl eframe::App for App {
                 ui.add_space(4.0);
                 ui.horizontal(|ui| {
                     let w = ui.available_width();
-                    ui.add_space(((w - 190.0) / 2.0).max(0.0));
-                    if icon_button(ui, Icon::Prev, self.tr().prev, false, 42.0) {
+                    ui.add_space(((w - 170.0) / 2.0).max(0.0));
+                    if icon_button(ui, Icon::Prev, self.tr().prev, false, 36.0) {
                         self.prev();
                     }
                     let is_playing = self.player.as_ref().map_or(false, |p| p.is_playing());
@@ -1271,7 +1267,7 @@ impl eframe::App for App {
                             self.play_index(0);
                         }
                     }
-                    if icon_button(ui, Icon::Next, self.tr().next, false, 42.0) {
+                    if icon_button(ui, Icon::Next, self.tr().next, false, 36.0) {
                         self.next();
                     }
                 });
@@ -1331,8 +1327,8 @@ fn main() -> eframe::Result<()> {
         viewport: egui::ViewportBuilder::default()
             .with_title(Lang::It.tr().window_title)
             .with_icon(disc_icon(256))
-            .with_inner_size([640.0, 520.0])
-            .with_min_inner_size([460.0, 420.0]),
+            .with_inner_size([560.0, 460.0])
+            .with_min_inner_size([420.0, 380.0]),
         ..Default::default()
     };
     eframe::run_native(
